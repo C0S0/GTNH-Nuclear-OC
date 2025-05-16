@@ -78,13 +78,25 @@ local function check()
         shutdown()
     end
 
+    flag = 0
+    
     for _, i in pairs(reactorFuelRodsIndex) do --check whether has dried fuel or empty slot
         local item = reactorItems[i - 1]
         if next(item) == nil then
+            pause()
+            if flag == 0 then
+                flag = 1
+                sleep(1)
+            end
             checkHasFuelRods()
             transposer.transferItem(me_interface, reactor, 1, me_interfaceFuelRodsIndex, i)
         else
             if item['maxDamage'] == 0 then
+                pause()
+                if flag == 0 then
+                    flag = 1
+                    sleep(1)
+                end
                 checkHasFuelRods()
                 transposer.transferItem(reactor, me_interface, 1, i, me_interfaceEmptyIndex)
                 transposer.transferItem(me_interface, reactor, 1, me_interfaceFuelRodsIndex, i)
